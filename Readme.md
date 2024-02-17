@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
-* Студент: [Михаил Бузмаков](https://up.htmlacademy.ru/univer-js3/4/user/2346649).
-* Наставник: `Неизвестно`.
+* Студент: [Михаил Бузмаков](https://up.htmlacademy.ru/univer-js3/4/user/2346649)
+* Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865)
 
 ---
 
