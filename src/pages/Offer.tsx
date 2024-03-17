@@ -1,4 +1,8 @@
-export default function Offer () {
+type OfferProps = {
+  offers: string[];
+}
+
+export default function Offer ({offers}: OfferProps) {
   return (
     <div className="page">
       <header className="header">
@@ -39,7 +43,7 @@ export default function Offer () {
           </div>
         </div>
       </header>
-
+      {null && offers}
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
