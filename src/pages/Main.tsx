@@ -1,14 +1,20 @@
-import card, {Place} from '../components/component.tsx';
+import {Link} from 'react-router-dom';
+import {OfferType} from '../types/offer.tsx';
+import CardsList from '../components/offerList.tsx';
 
+type MainProbs = {
+  placeCards: number;
+  offers: OfferType[];
+}
 
-export default function Main ({ placeCards }: { placeCards: Place[] }) {
+export default function Main ({ placeCards, offers}: MainProbs) {
   return (
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
+              <Link to='/' className="header__logo-link header__logo-link--active">
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -16,7 +22,7 @@ export default function Main ({ placeCards }: { placeCards: Place[] }) {
                   width={81}
                   height={41}
                 />
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -29,7 +35,9 @@ export default function Main ({ placeCards }: { placeCards: Place[] }) {
                     <span className="header__user-name user__name">
                   Oliver.conner@gmail.com
                     </span>
-                    <span className="header__favorite-count">3</span>
+                    <Link to='/favorites'>
+                      <span className="header__favorite-count">3</span>
+                    </Link>
                   </a>
                 </li>
                 <li className="header__nav-item">
@@ -84,7 +92,7 @@ export default function Main ({ placeCards }: { placeCards: Place[] }) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{placeCards} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -112,7 +120,7 @@ export default function Main ({ placeCards }: { placeCards: Place[] }) {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {placeCards.map((item) => card(item))}
+                < CardsList citiesCards={offers} />
               </div>
             </section>
             <div className="cities__right-section">

@@ -1,15 +1,17 @@
-type OfferProps = {
-  offers: string[];
-}
+// type OfferProps = {
+//   offers: string[];
+// }
 
-export default function Offer ({offers}: OfferProps) {
+import {Link} from 'react-router-dom';
+
+export default function Offer () {
   return (
     <div className="page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <Link to='/' className="header__logo-link">
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -17,7 +19,7 @@ export default function Offer ({offers}: OfferProps) {
                   width="81"
                   height="41"
                 />
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
@@ -30,7 +32,9 @@ export default function Offer ({offers}: OfferProps) {
                     <span className="header__user-name user__name">
                     Oliver.conner@gmail.com
                     </span>
-                    <span className="header__favorite-count">3</span>
+                    <Link to="/favorites">
+                      <span className="header__favorite-count">3</span>
+                    </Link>
                   </a>
                 </li>
                 <li className="header__nav-item">
@@ -43,7 +47,6 @@ export default function Offer ({offers}: OfferProps) {
           </div>
         </div>
       </header>
-      {null && offers}
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">

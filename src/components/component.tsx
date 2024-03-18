@@ -4,11 +4,15 @@ export type Place = {
   name: string;
   type: 'Apartment' | 'Room';
   valuePerNight: number;
-  rating: 1 | 2 | 3 | 4 | 5;
-  isBookmarked?: boolean;
+  rating: number;
+  isBookmarked: boolean;
 };
 
-export default function card(place: Place) {
+type PlaceProps = {
+  place: Place;
+}
+
+export default function Card({place}: PlaceProps): JSX.Element {
   return (
     <article className="cities__card place-card">
       {place.isPremium && (
