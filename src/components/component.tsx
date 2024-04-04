@@ -1,20 +1,34 @@
+import ScrollTop from './scroll-top.tsx';
+import {NavLink} from 'react-router-dom';
+import {useState} from 'react';
+
 export type Place = {
-  isPremium?: boolean;
+  id: string;
+  isPremium: boolean;
   img: string;
   name: string;
   type: 'Apartment' | 'Room';
   valuePerNight: number;
   rating: number;
   isBookmarked: boolean;
+  onListItemHover?: (listItemName: string) => void;
 };
 
-type PlaceProps = {
-  place: Place;
-}
+// type PlaceProps = {
+//   place: Place;
+// }
 
-export default function Card({place}: PlaceProps): JSX.Element {
+export default function Card(place: Place): JSX.Element {
+  const [activeOfferId, setActiveOfferId] = useState('');
+  function handleMouseOver() {
+    if (place.onListItemHover) {
+      place.onListItemHover(place.name);
+    }
+    setActiveOfferId(place.id);
+  }
+
   return (
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" onMouseOver={handleMouseOver}>
       {place.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -53,7 +67,8 @@ export default function Card({place}: PlaceProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{place.name}</a>
+          <ScrollTop />
+          <NavLink to={`/offer/${activeOfferId}`}>{place.name}</NavLink>
         </h2>
         <p className="place-card__type">{place.type}</p>
       </div>

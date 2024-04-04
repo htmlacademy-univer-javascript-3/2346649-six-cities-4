@@ -10,7 +10,11 @@ export default function Favourites({favorites}: FavoritesPageProp): JSX.Element 
   const favoritesMap = favorites.reduce(
     (acc: Record<string, OfferType[]>, place: OfferType) => {
       const city = place.city.name;
-      acc[city] = [...(acc[city] ?? []), place];
+      if (city in acc) {
+        acc[city].push(place);
+      } else {
+        acc[city] = [place];
+      }
       return acc;
     },
     {}
@@ -72,7 +76,9 @@ export default function Favourites({favorites}: FavoritesPageProp): JSX.Element 
                   </div>
                   <div className="favorites__places">
                     {favoritesMap[city].map((place) => (
-                      <Card key={place.id} place={place}/>
+                      <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
+                        valuePerNight={place.valuePerNight} rating={place.rating}
+                      />
                     ))}
                   </div>
                 </li>

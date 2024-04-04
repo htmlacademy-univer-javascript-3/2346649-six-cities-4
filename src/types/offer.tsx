@@ -8,12 +8,19 @@ type Review = {
   description: string;
 };
 
-export type City = {
-  'name': string;
+export type Point = {
+  name: string;
+  lat: number;
+  lng: number;
+};
+
+export type City =
+  Point & {
+  zoom: number;
 };
 
 export type OfferType = {
-  id: number;
+  id: string;
   name: string;
   description: string;
   img: string;
