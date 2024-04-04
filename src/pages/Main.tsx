@@ -1,13 +1,25 @@
 import {Link} from 'react-router-dom';
-import {OfferType} from '../types/offer.tsx';
+import {City, OfferType} from '../types/offer.tsx';
 import CardsList from '../components/offerList.tsx';
+import {amsterdam} from '../mocks/cities.tsx';
+import {useState} from 'react';
+import Map from '../components/cities-map.tsx';
 
-type MainProbs = {
+type MainProps = {
   placeCards: number;
   offers: OfferType[];
 }
 
-export default function Main ({ placeCards, offers}: MainProbs) {
+export default function Main ({ placeCards, offers }: MainProps) {
+  const points: City[] = [];
+  offers.map((e) => e.city).forEach((point) => {
+    points.push(point);
+  });
+  const [selectedPoint, setSelectedPoint] = useState<City | undefined>(points[0]);
+  const handleListItemHover = (listItemName: string) => {
+    const currentPoint = points.find((point) => point.name === listItemName);
+    setSelectedPoint(currentPoint);
+  };
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -119,12 +131,15 @@ export default function Main ({ placeCards, offers}: MainProbs) {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                < CardsList citiesCards={offers} />
-              </div>
+              <CardsList citiesCards={offers.map((item) => ({id: item.id, valuePerNight: item.valuePerNight,
+                isBookmarked: item.isBookmarked, img: item.img, isPremium: item.isPremium, rating: item.rating, type: item.type,
+                name: item.name, onListItemHover: handleListItemHover}))}
+              />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"/>
+              <section className="cities__map map">
+                <Map city={amsterdam} points={offers} selectedPoint={selectedPoint}/>
+              </section>
             </div>
           </div>
         </div>

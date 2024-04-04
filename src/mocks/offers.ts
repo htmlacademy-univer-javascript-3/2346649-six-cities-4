@@ -2,7 +2,7 @@ import {OfferType} from '../types/offer';
 
 export const offers: OfferType[] = [
   {
-    id: 0,
+    id: '0',
     name: 'Beautiful &amp; luxurious studio at great location',
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     valuePerNight: 120,
@@ -21,12 +21,15 @@ export const offers: OfferType[] = [
     },
     isPremium: true,
     city: {
-      'name': 'Amsterdam'
+      name: 'Amsterdam',
+      lat: 52.3909553943508,
+      lng: 4.85309666406198,
+      zoom: 5
     },
     img: 'img/apartment-01.jpg'
   },
   {
-    id: 1,
+    id: '1',
     name: 'Wood and stone place',
     description: 'Good room at the centre of city',
     valuePerNight: 100,
@@ -47,12 +50,15 @@ export const offers: OfferType[] = [
     },
     isPremium: true,
     city: {
-      'name': 'Amsterdam'
+      name: 'Amsterdam',
+      lat: 52.3609553943508,
+      lng: 4.85309666406198,
+      zoom: 5
     },
     img: 'img/apartment-02.jpg'
   },
   {
-    id: 2,
+    id: '2',
     name: 'Apartment',
     description: 'Nice, cozy, warm big bed apartment',
     valuePerNight: 180,
@@ -71,12 +77,15 @@ export const offers: OfferType[] = [
     },
     isPremium: false,
     city: {
-      'name': 'Amsterdam'
+      name: 'Amsterdam',
+      lat: 52.3909553943508,
+      lng: 4.929309666406198,
+      zoom: 5
     },
     img: 'img/apartment-03.jpg'
   },
   {
-    id: 3,
+    id: '3',
     name: 'Room',
     description: 'A budget option with excellent views',
     valuePerNight: 52,
@@ -95,7 +104,10 @@ export const offers: OfferType[] = [
     },
     isPremium: true,
     city: {
-      'name': 'Amsterdam'
+      name: 'Amsterdam',
+      lat: 52.3809553943508,
+      lng: 4.939309666406198,
+      zoom: 5
     },
     img: 'img/room.jpg'
   },

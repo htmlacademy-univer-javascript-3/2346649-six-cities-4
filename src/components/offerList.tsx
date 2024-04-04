@@ -1,16 +1,17 @@
-import {OfferType} from '../types/offer.tsx';
-import Card from './component.tsx';
+import Card, {Place} from './component.tsx';
 
 
 type CardsListProps = {
-  citiesCards: OfferType[];
+  citiesCards: Place[];
 };
 
-function CardsList({citiesCards}: CardsListProps) {
+function CardsList({citiesCards}: CardsListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
-      {citiesCards.map((city) => (
-        <Card key={city.id} place={city}/>
+      {citiesCards.map((place) => (
+        <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
+          valuePerNight={place.valuePerNight} rating={place.rating} onListItemHover={place.onListItemHover}
+        />
       ))}
     </div>
   );
