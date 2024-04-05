@@ -1,4 +1,4 @@
-type Review = {
+export type Review = {
   id: number;
   author: string;
   avatar: string;
@@ -28,7 +28,7 @@ export type OfferType = {
   type: 'Apartment' | 'Room';
   isBookmarked: boolean;
   rating: number;
-  review: Review;
+  review: Review[];
   isPremium: boolean;
   isFavorite: boolean;
   city: City;

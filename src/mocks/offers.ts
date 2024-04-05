@@ -10,7 +10,7 @@ export const offers: OfferType[] = [
     rating: 4.4,
     isBookmarked: true,
     isFavorite: true,
-    review: {
+    review: [{
       id: 0,
       author: 'Angelina',
       avatar: 'img/avatar-angelina.jpg',
@@ -18,7 +18,7 @@ export const offers: OfferType[] = [
       rating: 5,
       date: 'April 2021',
       description: 'Great place and great apartment!'
-    },
+    }],
     isPremium: true,
     city: {
       name: 'Amsterdam',
@@ -37,7 +37,7 @@ export const offers: OfferType[] = [
     rating: 5,
     isBookmarked: false,
     isFavorite: true,
-    review: {
+    review: [{
       id: 1,
       author: 'Max',
       avatar: 'img/avatar-max.jpg',
@@ -47,7 +47,7 @@ export const offers: OfferType[] = [
       description: 'An independent House, strategically located between Rembrand\n' +
         '                  Square and National Opera, but where the bustle of the city\n' +
         '                  comes to rest in this alley flowery and colorful.'
-    },
+    }],
     isPremium: true,
     city: {
       name: 'Amsterdam',
@@ -66,7 +66,7 @@ export const offers: OfferType[] = [
     rating: 5,
     isBookmarked: true,
     isFavorite: true,
-    review: {
+    review: [{
       id: 2,
       author: 'Angelina',
       avatar: 'img/avatar-angelina.jpg',
@@ -74,7 +74,7 @@ export const offers: OfferType[] = [
       rating: 5,
       date: 'May 2024',
       description: 'Great place and great apartment!'
-    },
+    }],
     isPremium: false,
     city: {
       name: 'Amsterdam',
@@ -93,7 +93,7 @@ export const offers: OfferType[] = [
     rating: 3.1,
     isBookmarked: false,
     isFavorite: false,
-    review: {
+    review: [{
       id: 3,
       author: 'Max',
       avatar: 'img/avatar-max.jpg',
@@ -101,7 +101,7 @@ export const offers: OfferType[] = [
       rating: 2,
       date: 'October 2020',
       description: 'Canal View Prinsengracht is beautiful. Everything else is just crap'
-    },
+    }],
     isPremium: true,
     city: {
       name: 'Amsterdam',
