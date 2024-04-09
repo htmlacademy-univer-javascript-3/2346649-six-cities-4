@@ -70,7 +70,7 @@ export default function App ({placeCardsNum, offers}: AppProps){
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<PrivateRoute><Favourites favorites={favorites}/></PrivateRoute>} />
         <Route path="offer/">
-          <Route path=":id" element={<Offer />} />
+          <Route path=":id" element={<Offer offers={offers}/>} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

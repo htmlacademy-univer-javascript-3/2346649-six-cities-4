@@ -52,5 +52,5 @@ export default function Map(props: MapProps): JSX.Element {
     }
   }, [map, points, selectedPoint]);
 
-  return <div style={{height: '100px'}} ref={mapRef}></div>;
+  return <div style={{height: '800px', width: '500px', marginLeft: 'auto', marginRight: 'auto'}} ref={mapRef}></div>;
 }
