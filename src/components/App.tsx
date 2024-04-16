@@ -57,16 +57,15 @@ import {OfferType} from '../types/offer';
 // ];
 //
 type AppProps = {
-  placeCardsNum: number;
   offers: OfferType[];
 }
 
-export default function App ({placeCardsNum, offers}: AppProps){
+export default function App ({offers}: AppProps){
   const favorites = offers.filter((o) => o.isFavorite);
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main placeCards = {placeCardsNum} offers={offers}/>} />
+        <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<PrivateRoute><Favourites favorites={favorites}/></PrivateRoute>} />
         <Route path="offer/">
