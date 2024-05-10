@@ -5,9 +5,9 @@ import {useState} from 'react';
 export type Place = {
   id: string;
   isPremium: boolean;
-  img: string;
+  img: string[];
   name: string;
-  type: 'Apartment' | 'Room';
+  type: string;
   valuePerNight: number;
   rating: number;
   isBookmarked: boolean;
@@ -35,13 +35,16 @@ export default function Card(place: Place): JSX.Element {
         </div>)}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img
-            className="place-card__image"
-            src={place.img}
-            width={260}
-            height={200}
-            alt="Place image"
-          />
+          {place.img.map((item) => (
+            <img
+              key={place.id}
+              className="place-card__image"
+              src={item}
+              width={260}
+              height={200}
+              alt="Place image"
+            />
+          ))}
         </a>
       </div>
       <div className="place-card__info">

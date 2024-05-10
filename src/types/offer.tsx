@@ -23,9 +23,9 @@ export type OfferType = {
   id: string;
   name: string;
   description: string;
-  img: string;
+  img: string[];
   valuePerNight: number;
-  type: 'Apartment' | 'Room';
+  type: string;
   isBookmarked: boolean;
   rating: number;
   review: Review[];
@@ -33,3 +33,17 @@ export type OfferType = {
   isFavorite: boolean;
   city: City;
 };
+
+export type Host = {
+  name: string;
+  avatar: string;
+  isPro: boolean;
+}
+
+export type FullOffer = OfferType & {
+  location: Location;
+  bedrooms: number;
+  goods: string[];
+  host: Host;
+  maxAdults: number;
+}
