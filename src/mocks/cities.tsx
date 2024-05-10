@@ -19,3 +19,5 @@ export const filters = {
   HIGH_TO_LOW: 'Price: high to low',
   TOP_RATED: 'Top rated first'
 };
+
+export const constCities: string[] = ['Amsterdam', 'Paris'];

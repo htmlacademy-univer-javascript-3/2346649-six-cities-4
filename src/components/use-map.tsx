@@ -34,5 +34,11 @@ export default function useMap(
     }
   }, [mapRef, city]);
 
+  useEffect(() => {
+    if (map) {
+      map.setView([city.lat, city.lng], city.zoom);
+    }
+  }, [city, map]);
+
   return map;
 }

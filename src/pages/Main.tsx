@@ -1,13 +1,12 @@
 import {Link} from 'react-router-dom';
 import {City} from '../types/offer.tsx';
 import CardsList from '../components/offerList.tsx';
-import {amsterdam, filters} from '../mocks/cities.tsx';
+import {amsterdam, constCities, filters} from '../mocks/cities.tsx';
 import {useState} from 'react';
 import Map from '../components/cities-map.tsx';
 import {store} from '../store';
-import {useAppDispatch} from '../hooks';
-import {updateOffers} from '../store/action.ts';
 import Filters from '../components/filter.tsx';
+import CitiesList from '../cities-list/cities-list.tsx';
 
 // type MainProps = {
 //   placeCards: number;
@@ -15,15 +14,11 @@ import Filters from '../components/filter.tsx';
 // }
 
 export default function Main () {
-  const [currentState, setCurrentState] = useState(store.getState());
-  const handleCurrentState = () => {
-    setCurrentState(store.getState());
-  };
-  const dispatch = useAppDispatch();
-  const points: City[] = [];
-  currentState.offers.map((e) => e.city).forEach((point) => {
-    points.push(point);
-  });
+  const [currentState] = useState(store.getState());
+  const points = currentState.offers.map((item) => ({
+    id: item.id,
+    ...item.city
+  }));
   const [selectedPoint, setSelectedPoint] = useState<City | undefined>(points[0]);
   const handleListItemHover = (listItemName: string) => {
     const currentPoint = points.find((point) => point.name === listItemName);
@@ -79,74 +74,8 @@ export default function Main () {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            {/*<CitiesList />*/}
             <ul className="locationslist tabslist">
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Paris' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  href="#" onClick={() => {
-                    dispatch(updateOffers('Paris'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Cologne' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  href="#" onClick={() => {
-                    dispatch(updateOffers('Cologne'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Brussels' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  href="#" onClick={() => {
-                    dispatch(updateOffers('Brussels'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Amsterdam' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  onClick={() => {
-                    dispatch(updateOffers('Amsterdam'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Hamburg' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  href="#" onClick={() => {
-                    dispatch(updateOffers('Hamburg'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a
-                  className={currentState.city === 'Dusseldorf' ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-                  href="#" onClick={() => {
-                    dispatch(updateOffers('Dusseldorf'));
-                    handleCurrentState();
-                  }}
-                >
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              <CitiesList currentCity={currentState.city} cities={constCities}/>
             </ul>
           </section>
         </div>
@@ -154,17 +83,12 @@ export default function Main () {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentState.offers.length.toString()} places to stay in {currentState.city}</b>
+              <b className="places__found">{currentState.cityOffers.length.toString()} places to stay in {currentState.city}</b>
+              {/*Я помню вы говорили, что выше не нужно использовать currentState.city, но не помню почему, потому*/}
+              {/*что по логике мы же должны выводить предложения для нынешнего города*/}
               <Filters handleSort={handleSort}/>
-              <CardsList citiesCards={currentState.offers.map((item) => ({
-                id: item.id,
-                valuePerNight: item.valuePerNight,
-                isBookmarked: item.isBookmarked,
-                img: item.img,
-                isPremium: item.isPremium,
-                rating: item.rating,
-                type: item.type,
-                name: item.name,
+              <CardsList citiesCards={currentState.cityOffers.map((item) => ({
+                ...item,
                 onListItemHover: handleListItemHover,
               }))}
               sortType={sortType}

@@ -26,7 +26,7 @@ export const offers: OfferType[] = [
       lng: 4.85309666406198,
       zoom: 5
     },
-    img: 'img/apartment-01.jpg'
+    img: ['img/apartment-01.jpg']
   },
   {
     id: '1',
@@ -55,7 +55,7 @@ export const offers: OfferType[] = [
       lng: 4.85309666406198,
       zoom: 5
     },
-    img: 'img/apartment-02.jpg'
+    img: ['img/apartment-02.jpg']
   },
   {
     id: '2',
@@ -82,7 +82,7 @@ export const offers: OfferType[] = [
       lng: 4.929309666406198,
       zoom: 5
     },
-    img: 'img/apartment-03.jpg'
+    img: ['img/apartment-03.jpg']
   },
   {
     id: '3',
@@ -109,6 +109,6 @@ export const offers: OfferType[] = [
       lng: 4.939309666406198,
       zoom: 5
     },
-    img: 'img/room.jpg'
+    img: ['img/room.jpg']
   },
 ];
