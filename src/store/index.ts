@@ -7,4 +7,5 @@ export const store = configureStore({reducer, middleware: (getDefaultMiddleware)
     thunk: {
       extraArgument: API,
     },
-  })});
+  })
+});

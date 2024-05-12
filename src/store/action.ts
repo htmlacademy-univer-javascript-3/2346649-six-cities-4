@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {FullOffer, OfferType, Review} from '../types/offer.tsx';
+import {AuthorizationStatus, FullOffer, OfferType} from '../types/offer.tsx';
 
 export const updateOffers = createAction('updateOffers',
   (value: OfferType[]) => ({
@@ -11,6 +11,12 @@ export const updateCity = createAction<string>('updateCity');
 
 export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
 
+export const setUserDataLoadingStatus = createAction<boolean>('data/setUserDataLoadingStatus');
+
 export const updateCurrentOffer = createAction<FullOffer>('data/updateCurrentOffer');
 
-export const updateCurrentComments = createAction<Review[]>('data/updateCurrentComments');
+export const updateCurrentReviews = createAction<[]>('data/updateCurrentComments');
+
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+
+export const updateUserLogin = createAction<string | null>('user/updateUserLogin');

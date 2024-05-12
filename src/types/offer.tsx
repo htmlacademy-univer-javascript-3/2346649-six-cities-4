@@ -38,7 +38,7 @@ export type Host = {
   name: string;
   avatar: string;
   isPro: boolean;
-}
+};
 
 export type FullOffer = OfferType & {
   location: Location;
@@ -46,4 +46,49 @@ export type FullOffer = OfferType & {
   goods: string[];
   host: Host;
   maxAdults: number;
+};
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
+
+export type InitialState = {
+  city: string;
+  offers: OfferType[];
+  cityOffers: OfferType[];
+  isOffersDataLoading: boolean;
+  currentOffer: FullOffer | undefined;
+  currentReviews: [];
+  isUserDataLoading: boolean;
+  authorizationStatus: AuthorizationStatus;
+  userLogin: string | null;
+};
+
+export interface User {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+  email: string;
+  token: string;
+}
+
+export type UserData = {
+  id: number;
+  email: string;
+  token: string;
+};
+
+export type AuthData = {
+  login: string;
+  password: string;
+};
+
+export enum APIRoutes {
+  Offers = '/offers',
+  Favourite = '/favorite',
+  Comments = '/comments',
+  UserLogin = '/login',
+  UserLogout = '/logout'
 }
