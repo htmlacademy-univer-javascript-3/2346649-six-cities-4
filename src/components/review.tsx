@@ -1,6 +1,6 @@
 import {Review} from '../types/offer.tsx';
 
-function formatDate(dateString: string) {
+const formatDate = (dateString: string) => {
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -11,7 +11,7 @@ function formatDate(dateString: string) {
   const month = parseInt(parts[1], 10) - 1;
   const day = parseInt(parts[2], 10);
   return `${day} ${months[month]} ${year}`;
-}
+};
 
 export default function Reviews(review : Review) {
   return (
