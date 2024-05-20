@@ -10,6 +10,7 @@ import CardsList from '../components/offerList.tsx';
 import {filters} from '../mocks/cities.tsx';
 import Spinner from './Loading-Screen.tsx';
 import Header from './Header.tsx';
+import ReviewForm from '../components/Review-Form.tsx';
 
 type OffersProps = {
   offers: OfferType[];
@@ -127,6 +128,7 @@ export default function Offer ({offers}: OffersProps) {
               </div>
               <section className="offer__reviews reviews">
                 <ReviewsList reviews={currentReviews} />
+                <ReviewForm offerId={currentOffer.id}/>
               </section>
             </div>
           </div>
