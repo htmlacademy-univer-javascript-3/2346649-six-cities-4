@@ -92,3 +92,9 @@ export enum APIRoutes {
   UserLogin = '/login',
   UserLogout = '/logout'
 }
+
+export type ReviewData = {
+  id: string;
+  review: string;
+  rating: number;
+};
