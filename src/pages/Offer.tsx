@@ -51,6 +51,9 @@ export default function Offer ({offers}: OffersProps) {
       dispatch(setOffersDataLoadingStatus(false));
     }
   }, [dispatch, offer?.id]);
+  const points = offers.map((item) => ({
+    ...item.city
+  }));
   if (!offer) {
     return (<NotFoundPage />);
   }
@@ -158,7 +161,7 @@ export default function Offer ({offers}: OffersProps) {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={currentOffer.city} points={offers} selectedPoint={selectedPoint}/>
+            <Map city={currentOffer.city} points={points} selectedPoint={selectedPoint}/>
           </section>
         </section>
         <div className="container">
