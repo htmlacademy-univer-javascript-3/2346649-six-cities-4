@@ -1,11 +1,7 @@
 import {createAction} from '@reduxjs/toolkit';
-import {AuthorizationStatus, FullOffer, OfferType} from '../types/offer.tsx';
+import {AuthorizationStatus, FullOffer, OfferType, Review} from '../types/offer.tsx';
 
-export const updateOffers = createAction('updateOffers',
-  (value: OfferType[]) => ({
-    payload: value
-  })
-);
+export const updateOffers = createAction<OfferType[]>('updateOffers');
 
 export const updateCity = createAction<string>('updateCity');
 
@@ -15,7 +11,13 @@ export const setUserDataLoadingStatus = createAction<boolean>('data/setUserDataL
 
 export const updateCurrentOffer = createAction<FullOffer>('data/updateCurrentOffer');
 
-export const updateCurrentReviews = createAction<[]>('data/updateCurrentComments');
+export const setFavouritesDataLoadingStatus = createAction<boolean>('favourites/setFavouritesDataLoadingStatus');
+
+export const updateFavourites = createAction<OfferType[]>('favourites/updateFavorites');
+
+export const updateFavouritesCounter = createAction<number>('favourites/updateFavoritesCounter');
+
+export const updateCurrentReviews = createAction<Review[]>('data/updateCurrentReviews');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 

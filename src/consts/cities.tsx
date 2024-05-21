@@ -20,4 +20,4 @@ export const filters = {
   TOP_RATED: 'Top rated first'
 };
 
-export const constCities: string[] = ['Amsterdam', 'Paris'];
+export const constCities: string[] = ['Amsterdam', 'Paris', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];

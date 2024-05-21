@@ -1,5 +1,6 @@
-import Card, {Place} from './component.tsx';
-import {filters} from '../mocks/cities.tsx';
+import Card from './card.tsx';
+import {filters} from '../consts/cities.tsx';
+import {Place} from '../types/offer.tsx';
 
 
 type CardsListProps = {
@@ -25,9 +26,7 @@ function CardsList({citiesCards, sortType}: CardsListProps): JSX.Element {
   return (
     <div className="cities__places-list places__list tabs__content">
       {sortedCards.map((place) => (
-        <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
-          valuePerNight={place.valuePerNight} rating={place.rating} onListItemHover={place.onListItemHover}
-        />
+        <Card key={place.id} {...place}/>
       ))}
     </div>
   );

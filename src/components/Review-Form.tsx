@@ -1,6 +1,6 @@
 import {FormEvent, useState} from 'react';
 import {useAppDispatch} from '../hooks';
-import {fetchСommentsAction, postReviewAction} from '../api/api-cation.ts';
+import {fetchCommentsAction, postReviewAction} from '../api/api-action.ts';
 
 
 type ReviewFormProps = {
@@ -26,7 +26,7 @@ export default function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
     }));
     setRating('');
     setReviewText('');
-    dispatch(fetchСommentsAction({id: offerId}));
+    dispatch(fetchCommentsAction({id: offerId}));
   };
   return (
     <form className="reviews__form form" action="" onSubmit={handleSubmit} >

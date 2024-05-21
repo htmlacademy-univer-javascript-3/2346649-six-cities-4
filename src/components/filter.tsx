@@ -1,5 +1,5 @@
 
-import {filters} from '../mocks/cities.tsx';
+import {filters} from '../consts/cities.tsx';
 import {useState} from 'react';
 
 

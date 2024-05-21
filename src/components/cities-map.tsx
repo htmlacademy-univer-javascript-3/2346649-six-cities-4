@@ -1,12 +1,12 @@
-import {City, OfferType} from '../types/offer.tsx';
+import {City} from '../types/offer.tsx';
 import {Icon, layerGroup, Marker} from 'leaflet';
-import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../mocks/cities.tsx';
+import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../consts/cities.tsx';
 import {useEffect, useRef} from 'react';
 import useMap from './use-map.tsx';
 
 type MapProps = {
   city: City;
-  points: OfferType[];
+  points: City[];
   selectedPoint?: City;
 };
 
@@ -31,7 +31,7 @@ export default function Map(props: MapProps): JSX.Element {
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      points.map((e) => e.city).forEach((point) => {
+      points.forEach((point) => {
         const marker = new Marker({
           lat: point.lat,
           lng: point.lng,
