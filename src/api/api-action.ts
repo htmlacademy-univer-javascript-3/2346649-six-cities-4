@@ -72,15 +72,9 @@ export const postReviewAction = createAsyncThunk<void, ReviewData, {
   'data/postCommentAction',
   async ({ id, comment, rating }, { dispatch, extra: api }) => {
     dispatch(setUserDataLoadingStatus(true));
-    try {
-      const url = `${APIRoutes.Review}/${id}`;
-      console.log('Posting review to URL:', url);
-      await api.post<UserData>(url, { comment, rating });
-    } catch (error) {
-      console.error('Failed to post review:', error);
-    } finally {
-      dispatch(setUserDataLoadingStatus(false));
-    }
+    const url = `${APIRoutes.Review}/${id}`;
+    await api.post<UserData>(url, { comment, rating });
+    dispatch(setUserDataLoadingStatus(false));
   }
 );
 
