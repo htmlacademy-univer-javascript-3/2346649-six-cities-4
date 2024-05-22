@@ -1,7 +1,7 @@
 import {useAppDispatch} from '../hooks';
-import {updateCity} from '../store/action.ts';
 import {useState} from 'react';
 import {store} from '../store';
+import {updateCity} from '../store/action.ts';
 
 type CityProps = {
   city: string;
@@ -14,9 +14,9 @@ type CityListProps = {
 }
 
 function City ({ city, currentCity }: CityProps): JSX.Element {
-  const [, setCurrentState] = useState(store.getState());
+  const [, setCurrentState] = useState(store.getState().offers);
   const handleCurrentState = () => {
-    setCurrentState(store.getState());
+    setCurrentState(store.getState().offers);
   };
   const dispatch = useAppDispatch();
   return (

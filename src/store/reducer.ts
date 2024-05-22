@@ -1,26 +1,35 @@
-import {createReducer} from '@reduxjs/toolkit';
+import {combineReducers, createReducer} from '@reduxjs/toolkit';
 import {
-  requireAuthorization,
+  requireAuthorization, setFavouritesDataLoadingStatus,
   setOffersDataLoadingStatus, setUserDataLoadingStatus,
   updateCity,
-  updateCurrentOffer, updateCurrentReviews,
+  updateCurrentOffer, updateCurrentReviews, updateFavourites, updateFavouritesCounter,
   updateOffers, updateUserLogin
 } from './action.ts';
-import {AuthorizationStatus, InitialState} from '../types/offer.tsx';
+import {AuthorizationStatus, InitialStateFavourites, InitialStateOffer, InitialStateUser} from '../types/offer.tsx';
 
-const initialState: InitialState = {
+const initialStateOffer: InitialStateOffer = {
   city: 'Paris',
   offers: [],
   cityOffers: [],
   isOffersDataLoading: true,
   currentOffer: undefined,
-  currentReviews: [],
+  currentReviews: []
+};
+
+const InitialStateFavourites: InitialStateFavourites = {
+  favourites: [],
+  favouritesCounter: 0,
+  isFavouriteDataLoading: true
+};
+
+const InitialStateUser: InitialStateUser = {
   isUserDataLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   userLogin: null
 };
 
-const reducer = createReducer(initialState, (builder) => {
+const OfferReducer = createReducer(initialStateOffer, (builder) => {
   builder
     .addCase(updateCity, (state, action) => {
       state.city = action.payload;
@@ -38,7 +47,25 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateCurrentReviews, (state, action) => {
       state.currentReviews = action.payload;
+    });
+});
+
+const FavoutiesReducer = createReducer(InitialStateFavourites, (builder) => {
+  builder
+    .addCase(setFavouritesDataLoadingStatus, (state, action) => {
+      state.isFavouriteDataLoading = action.payload;
     })
+    .addCase(updateFavourites, (state, action) => {
+      state.favourites = action.payload;
+      state.favouritesCounter = state.favourites.length;
+    })
+    .addCase(updateFavouritesCounter, (state, action) => {
+      state.favouritesCounter = action.payload;
+    });
+});
+
+const UserReducer = createReducer(InitialStateUser, (builder) => {
+  builder
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
@@ -50,4 +77,8 @@ const reducer = createReducer(initialState, (builder) => {
     });
 });
 
-export default reducer;
+export const reducer = combineReducers({
+  user: UserReducer,
+  offers: OfferReducer,
+  favourites: FavoutiesReducer
+});

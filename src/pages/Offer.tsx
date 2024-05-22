@@ -1,33 +1,59 @@
 import {useParams} from 'react-router-dom';
-import {OfferType} from '../types/offer.tsx';
+import {AuthorizationStatus, OfferType} from '../types/offer.tsx';
 import NotFoundPage from '../error/NotFound.tsx';
 import ReviewsList from '../components/review-list.tsx';
 import Map from '../components/cities-map.tsx';
 import {useAppDispatch, useAppSelector} from '../hooks';
-import {useEffect} from 'react';
-import {fetchSingleOfferAction, fetchСommentsAction} from '../api/api-cation.ts';
+import {useEffect, useState} from 'react';
+import {fetchSingleOfferAction, fetchCommentsAction, updateFavourite} from '../api/api-action.ts';
 import CardsList from '../components/offerList.tsx';
-import {filters} from '../mocks/cities.tsx';
+import {filters} from '../consts/cities.tsx';
 import Spinner from './Loading-Screen.tsx';
 import Header from './Header.tsx';
 import ReviewForm from '../components/Review-Form.tsx';
+import {setOffersDataLoadingStatus, updateFavouritesCounter} from '../store/action.ts';
+import {FavouritesStatus} from '../consts/favourites-consts.ts';
 
 type OffersProps = {
   offers: OfferType[];
 }
 
 export default function Offer ({offers}: OffersProps) {
+  const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
+  const favouritesCounter = useAppSelector((state) => state.favourites.favouritesCounter);
+  const currentOffer = useAppSelector((state) => state.offers.currentOffer);
+  const currentReviews = useAppSelector((state) => state.offers.currentReviews);
   const params = useParams();
   const offer = offers.find((o) => o.id === params.id);
   const dispatch = useAppDispatch();
+  const [isFavorite, setIsFavorite] = useState(offer?.isFavorite);
+  const handleIsFavorite = () => {
+    if (isFavorite) {
+      dispatch(updateFavourite({
+        id: currentOffer?.id,
+        status: FavouritesStatus.DELETE
+      }));
+      setIsFavorite(false);
+      dispatch(updateFavouritesCounter(favouritesCounter - 1));
+    } else {
+      dispatch(updateFavourite({
+        id: currentOffer?.id,
+        status: FavouritesStatus.ADD
+      }));
+      setIsFavorite(true);
+      dispatch(updateFavouritesCounter(favouritesCounter + 1));
+    }
+  };
   useEffect(() => {
     if (offer?.id) {
       dispatch(fetchSingleOfferAction({id: offer.id}));
-      dispatch(fetchСommentsAction({id: offer.id}));
+      dispatch(fetchCommentsAction({id: offer.id}));
+      dispatch(setOffersDataLoadingStatus(false));
     }
   }, [dispatch, offer?.id]);
-  const currentOffer = useAppSelector((state) => state.currentOffer);
-  const currentReviews = useAppSelector((state) => state.currentReviews);
+  const points = offers.map((item) => ({
+    ...item.city
+  }));
   if (!offer) {
     return (<NotFoundPage />);
   }
@@ -46,12 +72,19 @@ export default function Offer ({offers}: OffersProps) {
     `${currentOffer?.bedrooms} Bedrooms`,
     `Max ${currentOffer?.maxAdults} adults`
   ];
-
   const offerFeatures = features.map((item) => (
     <li className="offer__feature offer__feature--entire" key={`${item}`}>
       {item}
     </li>
   ));
+  const authorized = (isAuthorized === AuthorizationStatus.Auth) && (
+    <button className={isFavorite ? 'offer__bookmark-button offer__bookmark-button--active button' : 'offer__bookmark-button button'} type="button" onClick={handleIsFavorite}>
+      <svg className="offer__bookmark-icon" width="31" height="33">
+        <use href="#icon-bookmark"></use>
+      </svg>
+      <span className="visually-hidden">To Bookmarks</span>
+    </button>
+  );
 
   return (
     <div className="page">
@@ -61,7 +94,7 @@ export default function Offer ({offers}: OffersProps) {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.img.map((item) => (
+              {currentOffer?.images.map((item) => (
                 <div className="offer__image-wrapper" key={currentOffer.id}>
                   <img className="offer__image" src={item} alt={`Photo studio ${currentOffer.id}`} />
                 </div>
@@ -78,12 +111,7 @@ export default function Offer ({offers}: OffersProps) {
                 <h1 className="offer__name">
                   {currentOffer.name}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                {authorized}
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -133,7 +161,7 @@ export default function Offer ({offers}: OffersProps) {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={currentOffer.city} points={offers} selectedPoint={selectedPoint}/>
+            <Map city={currentOffer.city} points={points} selectedPoint={selectedPoint}/>
           </section>
         </section>
         <div className="container">
@@ -142,7 +170,7 @@ export default function Offer ({offers}: OffersProps) {
             Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <CardsList citiesCards={otherOffers} sortType={filters.TOP_RATED}/>
+              <CardsList citiesCards={otherOffers.map((item) => ({...item}))} sortType={filters.TOP_RATED}/>
             </div>
           </section>
         </div>

@@ -1,19 +1,21 @@
 import {useAppDispatch, useAppSelector} from '../hooks';
 import Spinner from './Loading-Screen.tsx';
-import {logoutAction} from '../api/api-cation.ts';
+import {logoutAction} from '../api/api-action.ts';
 import {updateUserLogin} from '../store/action.ts';
 import {AuthorizationStatus} from '../types/offer.tsx';
+import {MouseEvent} from 'react';
 
 export default function Header(): JSX.Element {
-  const isAuthorized = useAppSelector((state) => state.authorizationStatus);
-  const isUserDataLoading = useAppSelector((state) => state.isUserDataLoading);
-  const userLogin = useAppSelector((state) => state.userLogin);
+  const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
+  const isUserDataLoading = useAppSelector((state) => state.user.isUserDataLoading);
+  const userLogin = useAppSelector((state) => state.user.userLogin);
+  const favouritesCounter = useAppSelector((state) => state.favourites.favouritesCounter);
   const dispatch = useAppDispatch();
   if (isUserDataLoading) {
     return <Spinner />;
   }
 
-  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleLogout = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     dispatch(logoutAction());
     dispatch(updateUserLogin(null));
@@ -28,11 +30,11 @@ export default function Header(): JSX.Element {
       </li>
     );
     userSection = (
-      <a className="headernav-link headernav-link--profile" href="#">
+      <a className="headernav-link headernav-link--profile" href="/favourites">
         <div className="headeravatar-wrapper useravatar-wrapper">
         </div>
         <span className="headeruser-name username">{userLogin}</span>
-        <span className="header__favorite-count">69</span>
+        <span className="header__favorite-count">{favouritesCounter}</span>
       </a>
     );
   } else {

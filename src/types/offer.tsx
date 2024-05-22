@@ -9,6 +9,7 @@ export type Review = {
 };
 
 export type Point = {
+  id: number;
   name: string;
   lat: number;
   lng: number;
@@ -20,18 +21,19 @@ export type City =
 };
 
 export type OfferType = {
-  id: string;
-  name: string;
+  city: City;
   description: string;
-  img: string[];
-  valuePerNight: number;
-  type: string;
+  id: string;
+  img: string;
   isBookmarked: boolean;
+  isFavorite: boolean;
+  isPremium: boolean;
+  name: string;
   rating: number;
   review: Review[];
-  isPremium: boolean;
-  isFavorite: boolean;
-  city: City;
+  type: string;
+  valuePerNight: number;
+  isFavourite: boolean;
 };
 
 export type Host = {
@@ -40,12 +42,26 @@ export type Host = {
   isPro: boolean;
 };
 
+export type Place = {
+  id: string;
+  isFavourite: boolean;
+  isPremium: boolean;
+  img: string;
+  name: string;
+  type: string;
+  valuePerNight: number;
+  rating: number;
+  isBookmarked: boolean;
+  onListItemHover?: (listItemName: string) => void;
+};
+
 export type FullOffer = OfferType & {
   location: Location;
   bedrooms: number;
   goods: string[];
   host: Host;
   maxAdults: number;
+  images: string[];
 };
 
 export enum AuthorizationStatus {
@@ -54,24 +70,25 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export type InitialState = {
+export type InitialStateOffer = {
   city: string;
   offers: OfferType[];
   cityOffers: OfferType[];
   isOffersDataLoading: boolean;
   currentOffer: FullOffer | undefined;
-  currentReviews: [];
+  currentReviews: Review[];
+};
+
+export type InitialStateUser = {
   isUserDataLoading: boolean;
   authorizationStatus: AuthorizationStatus;
   userLogin: string | null;
 };
 
-export interface User {
-  name: string;
-  avatarUrl: string;
-  isPro: boolean;
-  email: string;
-  token: string;
+export type InitialStateFavourites = {
+  isFavouriteDataLoading: boolean;
+  favourites: OfferType[];
+  favouritesCounter: number;
 }
 
 export type UserData = {

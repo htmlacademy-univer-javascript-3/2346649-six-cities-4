@@ -1,109 +1,76 @@
 import {OfferType} from '../types/offer.tsx';
-import Card from '../components/component.tsx';
 import Header from './Header.tsx';
+import {useAppDispatch, useAppSelector} from '../hooks';
+import {useEffect} from 'react';
+import Spinner from './Loading-Screen.tsx';
+import {fetchFavourites} from '../api/api-action.ts';
+import {constCities, filters} from '../consts/cities.tsx';
+import FavouriteCardList from '../components/favourite-list.tsx';
 
-type FavoritesPageProp = {
-  favorites: OfferType[];
-};
-
-export default function Favourites({favorites}: FavoritesPageProp): JSX.Element {
-  const favoritesMap = favorites.reduce(
-    (acc: Record<string, OfferType[]>, place: OfferType) => {
-      const city = place.city.name;
-      if (city in acc) {
-        acc[city].push(place);
-      } else {
-        acc[city] = [place];
-      }
-      return acc;
-    },
-    {}
-  );
+export default function Favourites() {
+  const dispatch = useAppDispatch();
+  const favourites = useAppSelector((state) => state.favourites.favourites);
+  const favouritesCounter = useAppSelector((state) => state.favourites.favouritesCounter);
+  useEffect(() => {
+    dispatch(fetchFavourites());
+  }, [dispatch, favouritesCounter]);
+  if (!favourites) {
+    return <Spinner/>;
+  }
+  const favouriteCities: { city: string; offers: OfferType[] }[] = [];
+  constCities.forEach((city) => favouriteCities.push({
+    city: city,
+    offers: favourites.filter((f) => f.city.name === city)
+  }));
+  const favoritesMap = favouriteCities.filter((city) => city.offers.length > 0);
+  // const favoritesMap = favourites.reduce(
+  //   (acc: Record<string, OfferType[]>, place: OfferType) => {
+  //     const city = place.city.name;
+  //     if (city in acc) {
+  //       acc[city].push(place);
+  //     } else {
+  //       acc[city] = [place];
+  //     }
+  //     return acc;
+  //   },
+  //   {}
+  // );
+  if (favoritesMap.length === 0) {
+    return (
+      <div className="page">
+        <Header />
+        <main className="page__main page__main--favorites">
+          <div className="page__favorites-container container">
+            <section className="favorites">
+              <h1 className="favorites__title">There will be your favourites</h1>
+            </section>
+          </div>
+        </main>
+      </div>
+    );
+  }
   return (
     <div className="page">
-      <Header />
-
+      <Header/>
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {Object.keys(favoritesMap).map((city) => (
-                <li className="favorites__locations-items" key={city}>
+              {(favoritesMap).map((item) => (
+                <li className="favorites__locations-items" key={item.city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
                       <a className="locations__item-link" href="#">
-                        <span>{city}</span>
+                        <span>{item.city}</span>
                       </a>
                     </div>
                   </div>
                   <div className="favorites__places">
-                    {favoritesMap[city].map((place) => (
-                      <Card key={place.id} id={place.id} isPremium={place.isPremium} img={place.img} name={place.name} type={place.type} isBookmarked={place.isBookmarked}
-                        valuePerNight={place.valuePerNight} rating={place.rating}
-                      />
-                    ))}
+                    <FavouriteCardList favouriteCards={item.offers.map((item_) => ({...item_}))} sortType={filters.TOP_RATED}/>
                   </div>
                 </li>
               ))}
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  <article className="favorites__card place-card">
-                    <div className="favorites__image-wrapper place-card__image-wrapper">
-                      <a href="#">
-                        <img
-                          className="place-card__image"
-                          src="img/apartment-small-04.jpg"
-                          width="150"
-                          height="110"
-                          alt="Place image"
-                        />
-                      </a>
-                    </div>
-                    <div className="favorites__card-info place-card__info">
-                      <div className="place-card__price-wrapper">
-                        <div className="place-card__price">
-                          <b className="place-card__price-value">&euro;180</b>
-                          <span className="place-card__price-text">
-                          &#47;&nbsp;night
-                          </span>
-                        </div>
-                        <button
-                          className="place-card__bookmark-button place-card__bookmark-button--active button"
-                          type="button"
-                        >
-                          <svg
-                            className="place-card__bookmark-icon"
-                            width="18"
-                            height="19"
-                          >
-                            <use xlinkHref="#icon-bookmark"></use>
-                          </svg>
-                          <span className="visually-hidden">In bookmarks</span>
-                        </button>
-                      </div>
-                      <div className="place-card__rating rating">
-                        <div className="place-card__stars rating__stars">
-                          <span style={{width: '100%'}}></span>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <h2 className="place-card__name">
-                        <a href="#">White castle</a>
-                      </h2>
-                      <p className="place-card__type">Apartment</p>
-                    </div>
-                  </article>
-                </div>
-              </li>
             </ul>
           </section>
         </div>
