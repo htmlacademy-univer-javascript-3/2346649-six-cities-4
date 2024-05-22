@@ -30,7 +30,7 @@ export default function Header(): JSX.Element {
       </li>
     );
     userSection = (
-      <a className="headernav-link headernav-link--profile" href="/favourites">
+      <a className="headernav-link headernav-link--profile" href="/Favourites">
         <div className="headeravatar-wrapper useravatar-wrapper">
         </div>
         <span className="headeruser-name username">{userLogin}</span>

@@ -1,99 +1,118 @@
 export type Review = {
-  id: number;
-  author: string;
-  avatar: string;
-  isPro: boolean;
-  rating: number;
+  comment: string;
   date: string;
-  description: string;
+  id: string;
+  rating: number;
+  user: User;
+};
+
+export type ReviewProps = {
+  date: string;
+  img: string;
+  name: string;
+  rating: number;
+  text: string;
+};
+
+export type Location = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+export type City = {
+  location: Location;
+  name: string;
 };
 
 export type Point = {
-  id: number;
-  name: string;
+  id: string;
   lat: number;
   lng: number;
-};
-
-export type City =
-  Point & {
-  zoom: number;
+  title: string;
 };
 
 export type OfferType = {
   city: City;
-  description: string;
   id: string;
-  img: string;
-  isBookmarked: boolean;
   isFavorite: boolean;
   isPremium: boolean;
-  name: string;
+  location: Location;
+  previewImage: string;
+  price: number;
   rating: number;
-  review: Review[];
+  title: string;
   type: string;
-  valuePerNight: number;
-  isFavourite: boolean;
 };
 
 export type Host = {
-  name: string;
-  avatar: string;
+  avatarUrl: string;
   isPro: boolean;
+  name: string;
 };
+
+export type User = Host;
 
 export type Place = {
   id: string;
-  isFavourite: boolean;
-  isPremium: boolean;
-  img: string;
-  name: string;
-  type: string;
-  valuePerNight: number;
-  rating: number;
-  isBookmarked: boolean;
+  image: string;
+  isFavorite: boolean;
+  isPremium?: boolean;
   onListItemHover?: (listItemName: string) => void;
+  price: number;
+  rating?: number;
+  roomName: string;
+  roomType: string;
 };
 
-export type FullOffer = OfferType & {
+export type FullOffer = {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: City;
   location: Location;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  description: string;
   bedrooms: number;
   goods: string[];
   host: Host;
-  maxAdults: number;
   images: string[];
+  maxAdults: number;
 };
 
 export enum AuthorizationStatus {
-  Auth = 'AUTH',
-  NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+  NoAuth = 'NO_AUTH',
+  Auth = 'AUTH',
 }
 
 export type InitialStateOffer = {
   city: string;
-  offers: OfferType[];
   cityOffers: OfferType[];
-  isOffersDataLoading: boolean;
   currentOffer: FullOffer | undefined;
   currentReviews: Review[];
+  isOffersDataLoading: boolean;
+  offers: OfferType[];
 };
 
 export type InitialStateUser = {
-  isUserDataLoading: boolean;
   authorizationStatus: AuthorizationStatus;
+  isUserDataLoading: boolean;
   userLogin: string | null;
 };
 
 export type InitialStateFavourites = {
-  isFavouriteDataLoading: boolean;
   favourites: OfferType[];
   favouritesCounter: number;
-}
+  isFavouriteDataLoading: boolean;
+};
 
 export type UserData = {
-  id: number;
   email: string;
+  id: number;
   token: string;
 };
 
@@ -105,13 +124,13 @@ export type AuthData = {
 export enum APIRoutes {
   Offers = '/offers',
   Favourite = '/favorite',
-  Comments = '/comments',
+  Review = '/comments',
   UserLogin = '/login',
   UserLogout = '/logout'
 }
 
 export type ReviewData = {
   id: string;
-  review: string;
   rating: number;
+  comment: string;
 };

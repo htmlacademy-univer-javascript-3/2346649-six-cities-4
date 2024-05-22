@@ -1,10 +1,3 @@
-// export const amsterdam: City = {
-//   name: 'Amsterdam',
-//   lat: 52.3747,
-//   lng: 4.8986,
-//   zoom: 1
-// };
-
 export const URL_MARKER_DEFAULT =
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
 
@@ -18,4 +11,47 @@ export const filters = {
   TOP_RATED: 'Top rated first'
 };
 
-export const constCities: string[] = ['Amsterdam', 'Paris', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];
+export const constCities: string[] = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+export const rareCard = (rating: number | undefined) => {
+  if (rating === undefined) {
+    return (
+      <div className="place-card__rating rating">
+        <div className="place-card__stars rating__stars">
+          <span style={{width: '0%'}}/>
+          <span className="visually-hidden">Rating</span>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="place-card__rating rating">
+      <div className="place-card__stars rating__stars">
+        <span style={{width: `${rating * 20}%`}}/>
+        <span className="visually-hidden">Rating</span>
+      </div>
+    </div>
+  );
+};
+
+export const rareOffer = (rating: number | undefined) => {
+  if (rating === undefined) {
+    return (
+      <div className="offer__rating rating">
+        <div className="offer__stars rating__stars">
+          <span style={{width: '0%'}}/>
+          <span className="visually-hidden">Rating</span>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="offer__rating rating">
+      <div className="offer__stars rating__stars">
+        <span style={{width: `${rating * 20}%`}}/>
+        <span className="visually-hidden">Rating</span>
+      </div>
+      <span className="offer__rating-value rating__value">{rating}</span>
+    </div>
+  );
+};

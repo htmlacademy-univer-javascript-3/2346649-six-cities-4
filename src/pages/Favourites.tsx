@@ -67,7 +67,7 @@ export default function Favourites() {
                     </div>
                   </div>
                   <div className="favorites__places">
-                    <FavouriteCardList favouriteCards={item.offers.map((item_) => ({...item_}))} sortType={filters.TOP_RATED}/>
+                    <FavouriteCardList favouriteCards={item.offers.map((item_) => ({...item_, image: item_.previewImage, roomName: item_.title, roomType: item_.type}))} sortType={filters.TOP_RATED}/>
                   </div>
                 </li>
               ))}

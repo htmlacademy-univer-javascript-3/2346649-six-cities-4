@@ -1,13 +1,16 @@
-import {City} from '../types/offer.tsx';
-import {Icon, layerGroup, Marker} from 'leaflet';
+import {useRef, useEffect} from 'react';
+import {Icon, Marker, layerGroup} from 'leaflet';
+import useMap from './use-map';
+import 'leaflet/dist/leaflet.css';
+import {City, Point} from '../types/offer.tsx';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../consts/cities.tsx';
-import {useEffect, useRef} from 'react';
-import useMap from './use-map.tsx';
 
 type MapProps = {
   city: City;
-  points: City[];
-  selectedPoint?: City;
+  points: Point[];
+  selectedPoint: Point | undefined;
+  height: string;
+  width: string;
 };
 
 const defaultCustomIcon = new Icon({
@@ -22,9 +25,8 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-export default function Map(props: MapProps): JSX.Element {
-  const {city, points, selectedPoint} = props;
-
+function Map(props: MapProps): JSX.Element {
+  const {city, points, selectedPoint, height, width} = props;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -34,12 +36,12 @@ export default function Map(props: MapProps): JSX.Element {
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.lat,
-          lng: point.lng,
+          lng: point.lng
         });
 
         marker
           .setIcon(
-            !!selectedPoint && point.name === selectedPoint.name
+            selectedPoint !== undefined && point.id === selectedPoint.id
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -52,5 +54,7 @@ export default function Map(props: MapProps): JSX.Element {
     }
   }, [map, points, selectedPoint]);
 
-  return <div style={{height: '800px', width: '100%'}} ref={mapRef}></div>;
+  return <div style={{height: height, width: width, marginLeft: 'auto', marginRight: 'auto'}} ref={mapRef}></div>;
 }
+
+export default Map;

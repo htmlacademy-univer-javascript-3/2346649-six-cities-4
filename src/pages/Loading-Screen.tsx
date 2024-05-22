@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import { FC } from 'react';
 
 const Spinner: FC = () => (
   <div style={{
@@ -20,6 +20,13 @@ const Spinner: FC = () => (
     }}
     >
     </div>
+    <style>
+      {`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}
+    </style>
   </div>
 );
 
