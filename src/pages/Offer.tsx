@@ -6,8 +6,8 @@ import Map from '../components/cities-map.tsx';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {useEffect, useState} from 'react';
 import {fetchSingleOfferAction, fetchCommentsAction, updateFavourite} from '../api/api-action.ts';
-import CardsList from '../components/offerList.tsx';
-import {filters} from '../consts/cities.tsx';
+import CardsList from '../cards/offerList.tsx';
+import {filters, rareOffer} from '../consts/cities.tsx';
 import Spinner from './Loading-Screen.tsx';
 import Header from './Header.tsx';
 import ReviewForm from '../components/Review-Form.tsx';
@@ -26,6 +26,13 @@ export default function Offer ({offers}: OffersProps) {
   const params = useParams();
   const offer = offers.find((o) => o.id === params.id);
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (offer?.id) {
+      dispatch(fetchSingleOfferAction({id: offer.id}));
+      dispatch(fetchCommentsAction({id: offer.id}));
+      dispatch(setOffersDataLoadingStatus(false));
+    }
+  }, [dispatch, offer?.id]);
   const [isFavorite, setIsFavorite] = useState(offer?.isFavorite);
   const handleIsFavorite = () => {
     if (isFavorite) {
@@ -44,15 +51,11 @@ export default function Offer ({offers}: OffersProps) {
       dispatch(updateFavouritesCounter(favouritesCounter + 1));
     }
   };
-  useEffect(() => {
-    if (offer?.id) {
-      dispatch(fetchSingleOfferAction({id: offer.id}));
-      dispatch(fetchCommentsAction({id: offer.id}));
-      dispatch(setOffersDataLoadingStatus(false));
-    }
-  }, [dispatch, offer?.id]);
   const points = offers.map((item) => ({
-    ...item.city
+    lat: item.location.latitude,
+    lng: item.location.longitude,
+    name: item.title,
+    ...item
   }));
   if (!offer) {
     return (<NotFoundPage />);
@@ -60,7 +63,7 @@ export default function Offer ({offers}: OffersProps) {
   if (!currentOffer) {
     return <Spinner />;
   }
-  const selectedPoint = offers.find((o) => o.name === offer.city.name)?.city;
+  const selectedPoint = points.find((o) => o.title === offer.title);
   const otherOffers = offers.filter((e) => e !== offer);
   const offerInside = currentOffer.goods.map((item) => (
     <li className="offer__inside-item" key={`${item}`}>
@@ -103,28 +106,22 @@ export default function Offer ({offers}: OffersProps) {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {currentOffer.isPremium && (
+              {currentOffer?.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>)}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  {currentOffer.name}
+                  {currentOffer?.title}
                 </h1>
                 {authorized}
               </div>
-              <div className="offer__rating rating">
-                <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
-                  <span className="visually-hidden">Rating</span>
-                </div>
-                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
-              </div>
+              {rareOffer(currentOffer?.rating)}
               <ul className="offer__features">
                 {offerFeatures}
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer.valuePerNight}</b>
+                <b className="offer__price-value">&euro;{currentOffer?.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
@@ -139,29 +136,29 @@ export default function Offer ({offers}: OffersProps) {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={currentOffer.host.avatar}
+                      src={currentOffer?.host.avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">{currentOffer.host.name}</span>
-                  <span className="offer__user-status">{currentOffer.host.isPro ? 'Pro' : 'New'}</span>
+                  <span className="offer__user-name">{currentOffer?.host.name}</span>
+                  <span className="offer__user-status">{currentOffer?.host.isPro ? 'Pro' : 'New'}</span>
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    {currentOffer.description}
+                    {currentOffer?.description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 <ReviewsList reviews={currentReviews} />
-                <ReviewForm offerId={currentOffer.id}/>
+                <ReviewForm offerId={currentOffer?.id}/>
               </section>
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={currentOffer.city} points={points} selectedPoint={selectedPoint}/>
+            <Map city={currentOffer?.city} points={points} selectedPoint={selectedPoint} height='600px' width='1200px'/>
           </section>
         </section>
         <div className="container">
@@ -170,7 +167,7 @@ export default function Offer ({offers}: OffersProps) {
             Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <CardsList citiesCards={otherOffers.map((item) => ({...item}))} sortType={filters.TOP_RATED}/>
+              <CardsList citiesCards={otherOffers.map((item) => ({...item, image: item.previewImage, roomName: item.title, roomType: item.type}))} sortType={filters.TOP_RATED}/>
             </div>
           </section>
         </div>

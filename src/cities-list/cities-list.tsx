@@ -1,29 +1,30 @@
 import {useAppDispatch} from '../hooks';
-import {useState} from 'react';
 import {store} from '../store';
 import {updateCity} from '../store/action.ts';
+import {InitialStateOffer} from '../types/offer.tsx';
 
 type CityProps = {
   city: string;
   currentCity: string;
+  setCurrentCity: (offer: InitialStateOffer) => void;
 }
 
 type CityListProps = {
   cities: string[];
   currentCity: string;
+  setCurrentCity: (offer: InitialStateOffer) => void;
 }
 
-function City ({ city, currentCity }: CityProps): JSX.Element {
-  const [, setCurrentState] = useState(store.getState().offers);
+function City ({ city, currentCity, setCurrentCity }: CityProps): JSX.Element {
   const handleCurrentState = () => {
-    setCurrentState(store.getState().offers);
+    setCurrentCity(store.getState().offers);
   };
   const dispatch = useAppDispatch();
   return (
     <li className="locations__item">
       <a
-        className={currentCity === city ? 'locationsitem-link tabsitem tabs__item--active' : 'locationsitem-link tabsitem'}
-        href="#" onClick={() => {
+        className={currentCity === city ? 'locations__item-link tabs__item tabs__item--active' : 'locations__item-link tabs__item'}
+        onClick={() => {
           dispatch(updateCity(city));
           handleCurrentState();
         }}
@@ -34,12 +35,11 @@ function City ({ city, currentCity }: CityProps): JSX.Element {
   );
 }
 
-export default function CitiesList({cities, currentCity}: CityListProps): JSX.Element {
+export default function CitiesList({cities, currentCity, setCurrentCity}: CityListProps): JSX.Element {
   return (
-    <ul>
-      {cities.map((item, index) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <City key={index} city={item} currentCity={currentCity}/>
+    <ul className="locations__list tabs__list">
+      {cities.map((item) => (
+        <City key={item} city={item} currentCity={currentCity} setCurrentCity={setCurrentCity}/>
       ))}
     </ul>
   );

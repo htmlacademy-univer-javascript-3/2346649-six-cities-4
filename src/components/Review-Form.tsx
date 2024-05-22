@@ -1,7 +1,7 @@
-import {FormEvent, useState} from 'react';
-import {useAppDispatch} from '../hooks';
+import {ChangeEventHandler, FormEvent, MouseEventHandler, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../hooks';
 import {fetchCommentsAction, postReviewAction} from '../api/api-action.ts';
-
+import {AuthorizationStatus} from '../types/offer.tsx';
 
 type ReviewFormProps = {
   offerId: string;
@@ -11,23 +11,24 @@ export default function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
   const [rating, setRating] = useState('');
   const [reviewText, setReviewText] = useState('');
   const dispatch = useAppDispatch();
-  const handleRating: React.MouseEventHandler<HTMLInputElement> = (e) => {
+  const handleRating: MouseEventHandler<HTMLInputElement> = (e) => {
     setRating(e.currentTarget.value);
   };
-  const handleReviewText: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+  const handleReviewText: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setReviewText(e.currentTarget.value);
   };
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(postReviewAction({
       id: offerId,
-      review: reviewText,
+      comment: reviewText,
       rating: parseInt(rating, 10)
     }));
     setRating('');
     setReviewText('');
     dispatch(fetchCommentsAction({id: offerId}));
   };
+  const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
   return (
     <form className="reviews__form form" action="" onSubmit={handleSubmit} >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -70,9 +71,9 @@ export default function ReviewForm({offerId}: ReviewFormProps): JSX.Element {
       <textarea className="reviews__textarea form__textarea" id="review" name="review" value={reviewText} onChange={handleReviewText} placeholder="Tell how was your stay, what you like and what can be improved"></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please sign in, make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={rating === '' || reviewText.length < 100} >Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={rating === '' || reviewText.length < 50 || isAuthorized !== AuthorizationStatus.Auth} >Submit</button>
       </div>
     </form>
   );

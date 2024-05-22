@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, InternalAxiosRequestConfig} from 'axios';
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import {getToken} from '../types/token.ts';
 
 const BACKEND_URL = 'https://14.design.htmlacademy.pro/six-cities';
@@ -24,5 +24,3 @@ export const createAPI = (): AxiosInstance => {
 
   return api;
 };
-
-export const API = createAPI();

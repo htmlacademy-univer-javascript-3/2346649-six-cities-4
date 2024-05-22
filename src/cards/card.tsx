@@ -1,17 +1,18 @@
-import ScrollTop from './scroll-top.tsx';
+import ScrollTop from '../components/scroll-top.tsx';
 import {NavLink} from 'react-router-dom';
-import {useState} from 'react';
+import {memo, useState} from 'react';
 import {AuthorizationStatus, Place} from '../types/offer.tsx';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {updateFavourite} from '../api/api-action.ts';
 import {FavouritesStatus} from '../consts/favourites-consts.ts';
 import {updateFavouritesCounter} from '../store/action.ts';
+import {rareCard} from '../consts/cities.tsx';
 
-export default function Card(place: Place): JSX.Element {
+function Card(place: Place): JSX.Element {
   const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
   const favouritesCounter = useAppSelector((state) => state.favourites.favouritesCounter);
   const [activeOfferId, setActiveOfferId] = useState('');
-  const [isFavourite, setIsFavourite] = useState(place.isFavourite);
+  const [isFavourite, setIsFavourite] = useState(place.isFavorite);
   const dispatch = useAppDispatch();
   function handleMouseOver() {
     if (place.onListItemHover) {
@@ -44,7 +45,7 @@ export default function Card(place: Place): JSX.Element {
       <svg className="place-card__bookmark-icon" width="18" height="19">
         <use href="#icon-bookmark"></use>
       </svg>
-      <span className="visually-hidden">To Bookmarks</span>
+      <span className="visually-hidden">{isFavourite ? 'In bookmarks' : 'To bookmarks'}</span>
     </button>
   );
 
@@ -58,7 +59,7 @@ export default function Card(place: Place): JSX.Element {
         <a href="#">
           <img
             className="place-card__image"
-            src={place.img}
+            src={place.image}
             width={260}
             height={200}
             alt="Place image"
@@ -68,32 +69,20 @@ export default function Card(place: Place): JSX.Element {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{place.valuePerNight}</b>
+            <b className="place-card__price-value">&euro;{place.price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
           {authorized}
-          <button className={`place-card__bookmark-button ${
-            place.isBookmarked ? 'place-card__bookmark-button--active' : ''
-          } button`} type="button"
-          >
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
-              <use xlinkHref="#icon-bookmark"/>
-            </svg>
-            <span className="visually-hidden">{place.isBookmarked ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
         </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{width: `${place.rating * 20}%`}}/>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        {rareCard(place.rating)}
         <h2 className="place-card__name">
           <ScrollTop />
-          <NavLink to={`/offer/${activeOfferId}`}>{place.name}</NavLink>
+          <NavLink to={`/offer/${activeOfferId}`}>{place.roomName}</NavLink>
         </h2>
-        <p className="place-card__type">{place.type}</p>
+        <p className="place-card__type">{place.roomType}</p>
       </div>
     </article>
   );
 }
+
+export default memo(Card);
