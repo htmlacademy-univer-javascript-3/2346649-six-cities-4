@@ -88,7 +88,6 @@ export const postReviewAction = createAsyncThunk<void, ReviewData, {
   }
 );
 
-
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
