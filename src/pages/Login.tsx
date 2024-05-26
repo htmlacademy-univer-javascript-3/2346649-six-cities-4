@@ -1,7 +1,8 @@
 import {FormEvent, useRef} from 'react';
-import {useAppDispatch} from '../hooks';
+import {useAppDispatch, useAppSelector} from '../hooks';
 import {useNavigate} from 'react-router-dom';
 import {loginAction} from '../api/api-action.ts';
+import {AuthorizationStatus} from '../types/offer.tsx';
 
 export default function Login () {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -21,13 +22,17 @@ export default function Login () {
       navigate('/');
     }
   };
+  const isAuthorized = useAppSelector((state) => state.user.authorizationStatus);
+  if (isAuthorized === AuthorizationStatus.Auth) {
+    navigate('/');
+  }
   return (
     <div className="page page--gray page--login">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <a className="header__logo-link" href="#">
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"></img>
               </a>
             </div>

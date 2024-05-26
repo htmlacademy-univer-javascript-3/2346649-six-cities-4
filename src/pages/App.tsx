@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Offer from '../pages/Offer.tsx';
-import Login from '../pages/Login.tsx';
-import Favourites from '../pages/Favourites.tsx';
+import Offer from './Offer.tsx';
+import Login from './Login.tsx';
+import Favourites from './Favourites.tsx';
 import PrivateRoute from '../private/private-route.tsx';
 import {useAppSelector} from '../hooks';
 import NotFoundPage from '../error/NotFound.tsx';
-import Main from '../pages/Main.tsx';
-import Spinner from '../pages/Loading-Screen.tsx';
+import Main from './Main.tsx';
+import Spinner from './Loading-Screen.tsx';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.offers.isOffersDataLoading);
-  const offers = useAppSelector((state) => state.offers.cityOffers);
+  const offers = useAppSelector((state) => state.offers.offers);
   if (isOffersDataLoading) {
     return (
       <Spinner />

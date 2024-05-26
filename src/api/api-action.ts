@@ -29,10 +29,15 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
 }>(
   'data/fetchOffers',
   async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
-    const {data} = await api.get<OfferType[]>(APIRoutes.Offers);
-    dispatch(updateOffers(data));
-    dispatch(setOffersDataLoadingStatus(false));
+    try {
+      dispatch(setOffersDataLoadingStatus(true));
+      const {data} = await api.get<OfferType[]>(APIRoutes.Offers);
+      dispatch(updateOffers(data));
+    } catch {
+      dispatch(updateOffers([]));
+    } finally {
+      dispatch(setOffersDataLoadingStatus(false));
+    }
   },
 );
 
@@ -57,10 +62,15 @@ export const fetchCommentsAction = createAsyncThunk<void, { id: string | undefin
 }>(
   'data/fetchComments',
   async ({ id }, { dispatch, extra: api }) => {
-    dispatch(setOffersDataLoadingStatus(true));
-    const { data } = await api.get<Review[]>(`${APIRoutes.Review}/${id}`);
-    dispatch(updateCurrentReviews(data));
-    dispatch(setOffersDataLoadingStatus(false));
+    try {
+      dispatch(setOffersDataLoadingStatus(true));
+      const {data} = await api.get<Review[]>(`${APIRoutes.Review}/${id}`);
+      dispatch(updateCurrentReviews(data));
+    } catch {
+      dispatch(updateCurrentReviews([]));
+    } finally {
+      dispatch(setOffersDataLoadingStatus(false));
+    }
   }
 );
 
@@ -77,7 +87,6 @@ export const postReviewAction = createAsyncThunk<void, ReviewData, {
     dispatch(setUserDataLoadingStatus(false));
   }
 );
-
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -106,12 +115,18 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login, password}, {dispatch, extra: api}) => {
-    dispatch(setUserDataLoadingStatus(true));
-    const {data: {token, email}} = await api.post<UserData>(APIRoutes.UserLogin, {email: login, password});
-    dispatch(updateUserLogin(email));
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(setUserDataLoadingStatus(false));
+    try {
+      dispatch(setUserDataLoadingStatus(true));
+      const {data: {token, email}} = await api.post<UserData>(APIRoutes.UserLogin, {email: login, password});
+      dispatch(updateUserLogin(email));
+      saveToken(token);
+      dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    } catch {
+      dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(setUserDataLoadingStatus(false));
+    } finally {
+      dispatch(setUserDataLoadingStatus(false));
+    }
   },
 );
 
