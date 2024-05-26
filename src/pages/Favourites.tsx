@@ -23,30 +23,34 @@ export default function Favourites() {
     offers: favourites.filter((f) => f.city.name === city)
   }));
   const favoritesMap = favouriteCities.filter((city) => city.offers.length > 0);
-  // const favoritesMap = favourites.reduce(
-  //   (acc: Record<string, OfferType[]>, place: OfferType) => {
-  //     const city = place.city.name;
-  //     if (city in acc) {
-  //       acc[city].push(place);
-  //     } else {
-  //       acc[city] = [place];
-  //     }
-  //     return acc;
-  //   },
-  //   {}
-  // );
   if (favoritesMap.length === 0) {
     return (
-      <div className="page">
-        <Header />
-        <main className="page__main page__main--favorites">
+      <>
+        <main className="page__main page__main--favorites page__main--favorites-empty">
           <div className="page__favorites-container container">
-            <section className="favorites">
-              <h1 className="favorites__title">There will be your favourites</h1>
+            <section className="favorites favorites--empty">
+              <h1 className="visually-hidden">Favorites (empty)</h1>
+              <div className="favorites__status-wrapper">
+                <b className="favorites__status">Nothing yet saved.</b>
+                <p className="favorites__status-description">
+                  Save properties to narrow down search or plan your future trips.
+                </p>
+              </div>
             </section>
           </div>
         </main>
-      </div>
+        <footer className="footer">
+          <a className="footer__logo-link" href="#">
+            <img
+              className="footer__logo"
+              src="img/logo.svg"
+              alt="6 cities logo"
+              width={64}
+              height={33}
+            />
+          </a>
+        </footer>
+      </>
     );
   }
   return (
@@ -76,7 +80,7 @@ export default function Favourites() {
         </div>
       </main>
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <a className="footer__logo-link" href="#">
           <img
             className="footer__logo"
             src="img/logo.svg"
