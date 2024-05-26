@@ -7,6 +7,7 @@ import {store} from '../store';
 import Filters from '../components/filter.tsx';
 import CitiesList from '../cities-list/cities-list.tsx';
 import Header from './Header.tsx';
+import MainEmpty from '../components/main-empty.tsx';
 
 export default function Main () {
   const [currentState, setCurrentState] = useState(store.getState().offers);
@@ -36,19 +37,7 @@ export default function Main () {
         </div>
         <div className="cities">
           {currentState.cityOffers.length === 0 ? (
-            <div className="cities">
-              <div className="cities__places-container cities__places-container--empty container">
-                <section className="cities__no-places">
-                  <div className="cities__status-wrapper tabs__content">
-                    <b className="cities__status">No places to stay available</b>
-                    <p className="cities__status-description">We could not find any property available at the moment in
-                        Dusseldorf
-                    </p>
-                  </div>
-                </section>
-                <div className="cities__right-section"></div>
-              </div>
-            </div>
+            <MainEmpty city={currentState.city} />
           ) : (
             < div className = 'cities__places-container container' >
               < section className='cities__places places'>

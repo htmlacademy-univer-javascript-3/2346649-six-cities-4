@@ -51,10 +51,15 @@ export default function Offer ({offers}: OffersProps) {
       dispatch(updateFavouritesCounter(favouritesCounter + 1));
     }
   };
-  const points = offers.map((item) => ({
+  const otherOffers = offers.filter((e) => e !== offer);
+  const neighbourhoodThreeOffers = otherOffers.slice(0, 3);
+  let plusCurrentOffer = neighbourhoodThreeOffers;
+  if (offer) {
+    plusCurrentOffer = plusCurrentOffer.concat(offer);
+  }
+  const points = plusCurrentOffer.map((item) => ({
     lat: item.location.latitude,
     lng: item.location.longitude,
-    name: item.title,
     ...item
   }));
   if (!offer) {
@@ -64,7 +69,6 @@ export default function Offer ({offers}: OffersProps) {
     return <Spinner />;
   }
   const selectedPoint = points.find((o) => o.title === offer.title);
-  const otherOffers = offers.filter((e) => e !== offer);
   const offerInside = currentOffer.goods.map((item) => (
     <li className="offer__inside-item" key={`${item}`}>
       {item}
@@ -72,8 +76,8 @@ export default function Offer ({offers}: OffersProps) {
   ));
   const features = [
     currentOffer?.type.toLowerCase().replace(/\w/, (firstLetter) => firstLetter.toUpperCase()),
-    `${currentOffer?.bedrooms} Bedrooms`,
-    `Max ${currentOffer?.maxAdults} adults`
+    `${currentOffer?.bedrooms} ${currentOffer?.bedrooms > 1 ? 'Bedrooms' : 'Bedroom' }`,
+    `Max ${currentOffer?.maxAdults} ${currentOffer?.maxAdults > 1 ? 'adults' : 'adult' }`,
   ];
   const offerFeatures = features.map((item) => (
     <li className="offer__feature offer__feature--entire" key={`${item}`}>
@@ -91,7 +95,6 @@ export default function Offer ({offers}: OffersProps) {
 
   return (
     <div className="page">
-
       <Header/>
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -167,7 +170,7 @@ export default function Offer ({offers}: OffersProps) {
             Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <CardsList citiesCards={otherOffers.map((item) => ({...item, image: item.previewImage, roomName: item.title, roomType: item.type}))} sortType={filters.TOP_RATED}/>
+              <CardsList citiesCards={neighbourhoodThreeOffers.map((item) => ({...item, image: item.previewImage, roomName: item.title, roomType: item.type}))} sortType={filters.TOP_RATED}/>
             </div>
           </section>
         </div>

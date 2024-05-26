@@ -13,7 +13,7 @@ export default function Filters({handleSort}: FiltersProps): JSX.Element {
 
   const handleFilter = (filterChoice: string) => {
     setFilter(filterChoice);
-    setIsDropdownOpen(false); // Закрываем шторку после выбора фильтра
+    setIsDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
