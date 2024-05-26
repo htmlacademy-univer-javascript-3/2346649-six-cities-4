@@ -22,6 +22,7 @@ import {
 import {dropToken, saveToken} from '../types/token.ts';
 import {FavouritesData} from '../consts/favourites-consts.ts';
 
+
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
